@@ -1,4 +1,4 @@
-import { test } from '../fixtures/test.fixture';
+import { test, expect } from '../fixtures/test.fixture';
 
 test('Locator', async ({ page }) => {
     await page.goto('https://www.saucedemo.com');
@@ -41,4 +41,23 @@ test('Locator', async ({ page }) => {
     const username6 = page.getByRole('textbox', {name: 'Username'});
     const username7 = page.getByPlaceholder('Username');
     // ổn định nhất là getByRole vì Ít thay đổi khi UI refactor
+    
+    //Locator + expect
+    //Verify:
+    await expect(username).toBeVisible();
+    await expect(username).toBeEditable();
+
+    //Tìm tất cả input trên trang login
+    const input = page.locator('input');
+    await expect(input).toHaveCount(2);
+
+    // /Tìm input có placeholder là Username bằng filter:
+    const input1 = page.locator('input').filter({hasText: 'Username'});
+    
+    //Lấy input đầu tiên trên trang:
+    page.locator('input').nth(0);
+
+    //<input data-testid="username-input">
+    //Viết locator tối ưu nhất
+    page.getByTestId('username-input');
 });
