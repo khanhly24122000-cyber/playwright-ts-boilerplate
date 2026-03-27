@@ -1,28 +1,16 @@
 import { test, expect } from '../fixtures/test.fixture';
-import { HomePage } from '../pages/HomePage';
 import { testUsers } from '../utils/testData';
 
 test.describe('Login feature', () => {
-
-  test('Login success', async ({ page, loginPage }) => {
-    const homePage = new HomePage(page);
-
+  test('Login with valid credentials', async ({ loginPage, homePage }) => {
     await loginPage.openLoginPage();
-    await loginPage.login(
-      testUsers.valid.username,
-      testUsers.valid.password
-    );
-
+    await loginPage.login(testUsers.valid.username, testUsers.valid.password);
     await homePage.verifyLoginSuccess();
   });
 
-  test('Login failed', async ({ loginPage }) => {
+  test('Login with invalid credentials shows error', async ({ loginPage }) => {
     await loginPage.openLoginPage();
-    await loginPage.login(
-      testUsers.invalid.username,
-      testUsers.invalid.password
-    );
-
+    await loginPage.login(testUsers.invalid.username, testUsers.invalid.password);
     await loginPage.verifyLoginFailed();
   });
 });

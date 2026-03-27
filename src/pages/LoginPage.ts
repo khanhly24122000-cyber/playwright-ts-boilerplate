@@ -1,24 +1,35 @@
-import { expect } from '@playwright/test';
+import { Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { URLS } from '../constants';
 
 export class LoginPage extends BasePage {
-  private usernameInput = '#username';
-  private passwordInput = '#password';
-  private loginButton = 'button[type="submit"]';
-  private errorMessage = '#flash';
+  get usernameInput(): Locator {
+    return this.page.locator('#username');
+  }
+
+  get passwordInput(): Locator {
+    return this.page.locator('#password');
+  }
+
+  get loginButton(): Locator {
+    return this.page.locator('button[type="submit"]');
+  }
+
+  get flashMessage(): Locator {
+    return this.page.locator('#flash');
+  }
 
   async openLoginPage() {
-    await this.open('/login');
+    await this.open(URLS.LOGIN);
   }
 
   async login(username: string, password: string) {
-    await this.page.fill(this.usernameInput, username);
-    await this.page.fill(this.passwordInput, password);
-    await this.page.click(this.loginButton);
+    await this.fillInput(this.usernameInput, username);
+    await this.fillInput(this.passwordInput, password);
+    await this.clickElement(this.loginButton);
   }
 
   async verifyLoginFailed() {
-    await expect(this.page.locator(this.errorMessage))
-      .toContainText('invalid');
+    await expect(this.flashMessage).toContainText('invalid');
   }
 }
