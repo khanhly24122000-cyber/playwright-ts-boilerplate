@@ -3,7 +3,6 @@ import { ENV } from './src/utils/env';
 
 export default defineConfig({
   testDir: './src/tests',
-  testIgnore: ['**/exercises/**'],
   timeout: 30_000,
   expect: {
     timeout: 10_000,
